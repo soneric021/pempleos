@@ -37,17 +37,17 @@ class Empleo extends CI_Controller {
 	//Crear un empleo
 	public function create(){
 		$data = array(
-			"compañia" => $this->input->post("company"),
-			"tipo" => $this->input->post('tipo'),
-			'logo' => $this->input->post('logo'),
-			'url' => $this->input->post('url'),
-			'posicion' => $this->input->post('posicion'),
-			'ubicacion' => $this->input->post('ubicacion'),
-			'id_categoria' => $this->input->post('id_categoria'),
-			'descripcion' =>$this->input->post('descripcion'),
+			"compañia" => $this->request->company,
+			"tipo" => $this->request->tipo,
+			'logo' => $this->request->logo,
+			'url' => $this->request->url,
+			'posicion' => $this->request->posicion,
+			'ubicacion' => $this->request->ubicacion,
+			'id_categoria' => $this->request->id_categoria,
+			'descripcion' =>$this->request->descripcion,
 			'aplicar'=> "no sabia que poner aqui",
-			'email' => $this->input->post('email'),
-			'idUsuario' => $this->session->userdata('id') //Acuerdate de editar esto 
+			'email' => $this->request->email,
+			'idUsuario' => $this->request->id_usuario //Acuerdate de editar esto 
 		);
 		$this->empleos_model->create($data);
 		jsondata_result(array('Status' => true));
@@ -56,16 +56,17 @@ class Empleo extends CI_Controller {
 	//Editar un empleo
 	public function edit($id){
 			$data = array(
-			"compañia" => $this->input->post("company"),
-			"tipo" => $this->input->post('tipo'),
-			'logo' => $this->input->post('logo'),
-			'url' => $this->input->post('url'),
-			'posicion' => $this->input->post('posicion'),
-			'ubicacion' => $this->input->post('ubicacion'),
-			'id_categoria' => $this->input->post('id_categoria'),
-			'descripcion' =>$this->input->post('descripcion'),
-			'aplicar'=> $this->input->post('aplicar'),
-			'email' => $this->input->post('email'),
+				"compañia" => $this->request->company,
+				"tipo" => $this->request->tipo,
+				'logo' => $this->request->logo,
+				'url' => $this->request->url,
+				'posicion' => $this->request->posicion,
+				'ubicacion' => $this->request->ubicacion,
+				'id_categoria' => $this->request->id_categoria,
+				'descripcion' =>$this->request->descripcion,
+				'aplicar'=> "no sabia que poner aqui",
+				'email' => $this->request->email,
+				'idUsuario' => $this->request->id_usuario //Acuerdate de editar esto 
 		);
 		$this->empleos_model->edit($id, $data);
 		return jsondata_result(array('Status' => true));
@@ -89,7 +90,7 @@ class Empleo extends CI_Controller {
 		return jsondata_result(array('Status' => false));
 	}else{
 			$data = array(
-		'idUsuario' => $this->session->userdata('id'),
+		'idUsuario' => $this->request->id_usuario,
 		'idempleo' => $id
 	);
 		$this->postul_model->create($data);

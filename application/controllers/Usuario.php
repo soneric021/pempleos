@@ -2,81 +2,69 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Usuario extends CI_Controller {
-
+	private $request;
 	public function __construct()
 	 	{
 	 		parent::__construct();
 			$this->load->helper('url');
 	 		$this->load->model('usuario_model');
-	 		
+			 $this->load->helper('jsondata_helper');
+			 $this->request = json_decode(file_get_contents('php://input'));
 	 	}
 	 
 
 	public function registro(){
 		$data = array(
-			'nombre' => $this->input->post("nombre"), 
-			'apellido' => $this->input->post("apellido"),
-			'cedula' => $this->input->post("cedula"),
-			'contraseña' => $this->input->post("contraseña"),
-			'correo' => $this->input->post('correo'),
+			'nombre' => $this->request->nombre, 
+			'apellido' => $this->request->apellido,
+			'cedula' => $this->request->cedula,
+			'contraseña' => $this->request->contraseña,
+			'correo' => $this->request->correo,
 			'foto' => 'loquesea',
-			'tipo' => $this->input->post('tipo')
+			'tipo' => $this->request->tipo
 	);
 		$this->usuario_model->create($data);
 
-		return json_encode(array('Status' => true));
-	}
-	
+		return jsondata_result(array('Status' => true));
+}
 	public function login(){
-		$email = $this->input->post('correo');
-		$pass = $this->input->post('contraseña');
+		$email = $this->request->correo;
+		$pass = $this->request->contraseña;
 
 		$fila = $this->usuario_model->getuser($email);
-		
-		if($fila->tipo == 0){
-			$tipo = "admin";
-		}else if($fila->tipo == 1){
-			$tipo = "poster";
-		}else if($fila->tipo == 2){
-			$tipo = "user";
-		}
+		$token = bin2hex(random_bytes(64));
 
 		if($fila != null){
 			if ($fila->contraseña == $pass) {
-				$data = array('email'=> $email,
-								'id' => $fila->idUsuario,
-								'login' => true, 
-								'tipo' => $tipo);
-				$this->session->set_userdata($data);
-				header("location" . base_url());
-				echo "Todo esta bien chicos";
+				$data = array('token'=> $token,
+								'id' => $fila->idUsuario);
+				jsondata_result($data);
 			}else{
-				echo "algo mal11" ;
-			header("location" . base_url());
+			jsondata_result(array('err'=> 'hay un error'));
 			}
 			
 		}else{
-			echo "algo mal";
-			header("location" . base_url());
+			jsondata_result(array('err'=> 'hay un error'));
 		}
 
 	}
 
 	public function update($id){
 		$data = array(
-			'nombre' => $this->input->post("nombre"), 
-			'apellido' => $this->input->post("apellido"),
-			'cedula' => $this->input->post("cedula"),
-			'contraseña' => $this->input->post("contraseña"),
-			'correo' => $this->input->post('correo'),
+			'nombre' => $this->request->nombre, 
+			'apellido' => $this->request->apellido,
+			'cedula' => $this->request->cedula,
+			'contraseña' => $this->request->contraseña,
+			'correo' => $this->request->correo,
 			'foto' => 'loquesea',
-			'tipo' => '1'
+			'tipo' => $this->request->tipo
 	);
 		$this->usuario_model->edit($id, $data);
-		return json_encode(array('Status' => true));
+		return jsondata_result(array('Status' => true));
 	}
+
 	public function delete($id){
 		$this->usuario_model->delete($id);
-		return json_encode(array('Status' => true)); 
+		return jsondata_result(array('Status' => true)); 
 	}
 }

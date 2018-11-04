@@ -37,7 +37,7 @@ public function delete($id){
 }
 
 public function getuser($email = ''){
-	$result = $this->db->query("SELECT * FROM usuarios WHERE correo = '$email'");
+	$result = $this->db->query("SELECT * FROM usuarios WHERE email = '$email'");
 	if ($result->num_rows() > 0) {
 		return $result->row();
 	}else{

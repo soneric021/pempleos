@@ -15,7 +15,8 @@ class image extends CI_Controller {
     }
 
     function do_upload(){
-        $config['upload_path']= base_url() . "client/src/assets/";
+
+        $config['upload_path']=  "./uploads/";
         $config['allowed_types']='gif|jpg|png';
         $config['encrypt_name'] = TRUE;
          
@@ -25,9 +26,9 @@ class image extends CI_Controller {
  
             $image= $data['upload_data']['file_name']; 
              
-            jsondata_result(array('datos'=> $data, 'image' => $image));
+            jsondata_result(array('datos'=> $data, 'image' => "http://localhost/pempleos/uploads/".$image ));
         }else{
-            jsondata_result(array('err' => 'Error'));
+            jsondata_result(array('err' => $this->upload->display_errors()));
         }
  
      }

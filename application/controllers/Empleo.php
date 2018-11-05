@@ -18,9 +18,7 @@ class Empleo extends CI_Controller {
 		$this->load->model('postul_model');
 		$this->load->helper('jsondata_helper');
 	}
-	public function index(){
-		echo "estamos aqui";
-	}
+
 	//GET: empleosController/listar
 	// Muestra todos los empleos
 	public function listar(){
@@ -40,11 +38,13 @@ class Empleo extends CI_Controller {
 		$lista = $this->empleos_model->listarByCategory($categoria);
 		jsondata_result($lista);
 	}
+
+
 	//POST:empleosController/create
 	//Crear un empleo
 	public function create(){
 		$data = array(
-			"compañia" => $this->request->company,
+			"compañia" => $this->request->compañia,
 			"tipo" => $this->request->tipo,
 			'logo' => $this->request->logo,
 			'url' => $this->request->url,
@@ -52,13 +52,14 @@ class Empleo extends CI_Controller {
 			'ubicacion' => $this->request->ubicacion,
 			'id_categoria' => $this->request->id_categoria,
 			'descripcion' =>$this->request->descripcion,
-			'aplicar'=> "no sabia que poner aqui",
 			'email' => $this->request->email,
-			'idUsuario' => $this->request->id_usuario //Acuerdate de editar esto 
+			'idUsuario' => $this->request->idUsuario //Acuerdate de editar esto 
 		);
 		$this->empleos_model->create($data);
-		jsondata_result(array('Status' => true));
+		echo json_encode(array('status'=> true));
 	}
+
+
 	//PUT: empleosController/edit/{$id}
 	//Editar un empleo
 	public function edit($id){
@@ -79,6 +80,8 @@ class Empleo extends CI_Controller {
 		return jsondata_result(array('Status' => true));
 
 	}
+
+
 	//DELETE: empleosController/delete/{$id}
 	//Borrar un empleo por el id
 	public function delete($id){
@@ -91,18 +94,26 @@ class Empleo extends CI_Controller {
 		echo jsondata_result($this->empleos_model->buscar($busqueda));
 	}
 
+	public function getpostul($idUsuario, $idEmpleo){
+		
+		if($this->postul_model->checkPostulacion($idUsuario, $idEmpleo) ==false){
+			jsondata_result(array('status'=>true));
+		}else{
+			$lista = $this->postul_model->checkPostulacion($idUsuario, $idEmpleo);
+		jsondata_result($lista);
+		}
+	}
+
 	//POSTULACIONES postularse
-	public function postularse($id){
-	if($this->postul_model->checkpostulacion($this->session->userdata('id'), $id)){
-		return jsondata_result(array('Status' => false));
-	}else{
+	public function postularse(){
+	
 			$data = array(
-		'idUsuario' => $this->request->id_usuario,
-		'idempleo' => $id
+		'idUsuario' => $this->request->idUsuario,
+		'idempleo' => $this->request->idempleo
 	);
 		$this->postul_model->create($data);
 		return jsondata_result(array('Status' => true));
-	}
+	
 	}
 
 	//POSTULACIONES despostularse

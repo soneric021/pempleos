@@ -25,7 +25,7 @@ class postul_model extends CI_Model {
 public function checkPostulacion($iduser, $idempleo){
 	$result = $this->db->get_where($this->table, array('idUsuario' =>$iduser, 'idempleo' => $idempleo));
 	if($result->num_rows() > 0){
-		return true;
+		return $result->row();
 	}else{
 		return false;
 	}

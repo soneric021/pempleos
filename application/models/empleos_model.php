@@ -64,14 +64,9 @@ public function buscar($busqueda){
 	ORDER BY fecha LIMIT 10");
 	return $lista->result();
 }
-public function num_empleos(){
-	$number = $this->db->query('SELECT COUNT(*) as number FROM employee')->row()->number;
-	return intval($number);
-}
 
-public function pagination($number_por_page){
-	$this->db->get($this->table, $number_por_page, $this->uri->segment(3));
-}
+
+
 }
 
 ?>

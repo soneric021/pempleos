@@ -64,20 +64,20 @@ class Empleo extends CI_Controller {
 	//Editar un empleo
 	public function edit($id){
 			$data = array(
-				"compañia" => $this->request->company,
-				"tipo" => $this->request->tipo,
-				'logo' => $this->request->logo,
-				'url' => $this->request->url,
-				'posicion' => $this->request->posicion,
-				'ubicacion' => $this->request->ubicacion,
-				'id_categoria' => $this->request->id_categoria,
-				'descripcion' =>$this->request->descripcion,
-				'aplicar'=> "no sabia que poner aqui",
-				'email' => $this->request->email,
-				'idUsuario' => $this->request->id_usuario //Acuerdate de editar esto 
+				"compañia" => $this->request->compañia,
+			"tipo" => $this->request->tipo,
+			'url' => $this->request->url,
+			'posicion' => $this->request->posicion,
+			'ubicacion' => $this->request->ubicacion,
+			'descripcion' =>$this->request->descripcion,
+		
 		);
-		$this->empleos_model->edit($id, $data);
-		return jsondata_result(array('Status' => true));
+		if($this->empleos_model->edit($id, $data)>0){
+			return jsondata_result(array('Status' => true));
+		}else{
+			return jsondata_result(array('Status' => false));
+		}
+		
 
 	}
 

@@ -21,6 +21,10 @@ class Categoria extends CI_Controller {
 		$lista = $this->categoria_model->listar();
 		jsondata_result($lista);
 	}
+	public function listarid($id){
+		$lista = $this->categoria_model->listarById($id);
+		jsondata_result($lista);
+	}
 	public function create(){
 		$data = array(
 			'nombre' => $this->request->nombre,
@@ -31,11 +35,15 @@ class Categoria extends CI_Controller {
 	}
 	public function edit($id){
 		$data = array(
-			'nombre' => $this->request->nombre,
-			'idUsuario' => $this->request->id_usuario //que no se te olvide arreglar esto
+			'nombre' => $this->request->nombre
 		);
-		$this->categoria_model->edit($id,$data);
-		return jsondata_result(array('Status' => true));
+		$lista = $this->categoria_model->edit($id,$data);
+		if ($lista > 0) {
+			return jsondata_result(array('Status' => true));
+		}else{
+			return jsondata_result(array('Status' => false));
+		}
+		
 	}
 
 	public function delete($id){

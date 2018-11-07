@@ -20,7 +20,7 @@ public function listar(){
 }
 
 public function listarById($id){
-	$lista = $this->db->get_where("categoria",  array('id' => $id));
+	$lista = $this->db->get_where("categoria",  array('id_categoria' => $id));
 	return $lista->row();
 }
 
@@ -30,7 +30,8 @@ public function Create($data = []){
 }
 
 public function edit($id, $data = []){
-	$this->db->update($this->table, $data, $id);
+	$this->db->where('id_categoria', $id);
+	$this->db->update($this->table, $data);
 	return $this->db->affected_rows();
 }
 

@@ -19,29 +19,51 @@ class Empleo extends CI_Controller {
 		$this->load->helper('jsondata_helper');
 	}
 
-	//GET: empleosController/listar
-	// Muestra todos los empleos
+	/**
+	 * listar()
+	 * Get: empleo/listar
+	 * listar empleados
+	 * 
+	 * @return jsondata_result()
+	 */
 	public function listar(){
 		$lista = $this->empleos_model->listar();
 		jsondata_result($lista);
 	}
-	//GET: empleosController/listarid/{id}
-	//Mustra un empleo por ID
+
+	/**
+	 * listarid()
+	 * Get: empleo/listarid/{id}
+	 * Mustra un empleo por ID
+	 * 
+	 * @param int $id
+	 * @return jsondata_result()
+	 */
+
 	public function listarid($id){
 		$lista = $this->empleos_model->listarById($id);
 		jsondata_result($lista);
 	}
-
-	//GET: empleo/listarc?categoria={$categoria}
-	//Muestra un empleo por el id de la categoria
+	/**
+	 * listarc()
+	 * Get: empleo/listarc?categoria={$categoria}
+	 * Muestra un empleo por el id de la categoria
+	 * 
+	 * @param string $categoria
+	 * @return jsondata_result()
+	 */
 	public function listarc($categoria){
 		$lista = $this->empleos_model->listarByCategory($categoria);
 		jsondata_result($lista);
 	}
 
-
-	//POST:empleosController/create
-	//Crear un empleo
+	/**
+	 * create()
+	 * POST: empleo/create
+	 * Crear un empleo
+	 * 
+	 * @return jsondata_result()
+	 */
 	public function create(){
 		$data = array(
 			"compañia" => $this->request->compañia,
@@ -59,9 +81,14 @@ class Empleo extends CI_Controller {
 		echo json_encode(array('status'=> true));
 	}
 
-
-	//PUT: empleosController/edit/{$id}
-	//Editar un empleo
+	/**
+	 * edit()
+	 * PUT: empleo/edit/{$id}
+	 * Editar un empleo
+	 * 
+	 * @param int $id
+	 * @return jsondata_result()
+	 */
 	public function edit($id){
 			$data = array(
 				"compañia" => $this->request->compañia,
@@ -81,19 +108,38 @@ class Empleo extends CI_Controller {
 
 	}
 
-
-	//DELETE: empleosController/delete/{$id}
-	//Borrar un empleo por el id
+	/**
+	 * delete()
+	 * DELETE: empleo/delete/{$id}
+	 * Borrar un empleo por el id
+	 * 
+	 * @param int $id
+	 * @return jsondata_result()
+	 */
 	public function delete($id){
 		$this->empleos_model->delete($id);
 		return jsondata_result(array('Status' => true));
 	}
-	//GET: empleo/buscar?busqueda={$busqueda}
-	//Nuscardor
+	/**
+	 * buscar()
+	 * GET: empleo/buscar?busqueda={$busqueda}
+	 * Buscar por valor pasado
+	 * 
+	 * @param string $busqueda
+	 * @return jsondata_result()
+	 */
 	public function buscar($busqueda){
 		echo jsondata_result($this->empleos_model->buscar($busqueda));
 	}
-
+	/**
+	 * getpostul()
+	 * GET: empleo/getpostul?idusuario={$idUsuario}&&idEmpleo={$idEmpleo}
+	 * Chequear el estado de la postulacion.
+	 * 
+	 * @param int $idUsuario
+	 * @param int $idEmpleo
+	 * @return jsondata_result()
+	 */
 	public function getpostul($idUsuario, $idEmpleo){
 		
 		if($this->postul_model->checkPostulacion($idUsuario, $idEmpleo) ==false){
@@ -103,7 +149,13 @@ class Empleo extends CI_Controller {
 		jsondata_result($lista);
 		}
 	}
-
+	/**
+	 * postularse()
+	 * Post: empleo/postularse
+	 * Postular al usuario con el empleo.
+	 * 
+	 * @return jsondata_result()
+	 */
 	//POSTULACIONES postularse
 	public function postularse(){
 	
@@ -115,8 +167,14 @@ class Empleo extends CI_Controller {
 		return jsondata_result(array('Status' => true));
 	
 	}
-
-	//POSTULACIONES despostularse
+	/**
+	 * despostularse()
+	 * Put: empleo/postularse?id={$id}
+	 * despotularse por el id.
+	 * 
+	 * @param int $id
+	 * @return jsondata_result()
+	 */
 	public function despostularse($id){
 		$this->postul_model->delete($id);
 		return json_encode(array('Status' => true));

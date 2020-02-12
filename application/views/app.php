@@ -16,7 +16,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <div id="app"></div>
 
 
-<script src="<?php base_url() ?>assets/js/app.07324075.js "></script>
-<script src="<?php base_url() ?>assets/js/chunk-vendors.ef39781b.js  "></script>
+<script src="<?php base_url() ?>assets/js/app.5104670c.js"></script>
+<script src="<?php base_url() ?>assets/js/chunk-vendors.3336c003.js"></script>
 </body>
 </html>
